@@ -1,4 +1,4 @@
-import PossibleWorldsSemantics.Basic.Ontology
+import Basic.Ontology
 
 universe u
 

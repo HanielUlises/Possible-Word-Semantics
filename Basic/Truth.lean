@@ -1,5 +1,5 @@
-import PossibleWorldsSemantics.Basic.Ontology
-import PossibleWorldsSemantics.Basic.Propositions
+import Basic.Ontology
+import Basic.Propositions
 
 /-
   Truth at a world

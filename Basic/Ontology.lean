@@ -5,7 +5,7 @@ universe u
 -/
 
 /-- Worlds / situations are primitive entities -/
-constant World : Type u
+axiom World : Type u
 
 /-- Situations (a distinguished class of worlds) -/
-constant Situation : World → Prop
+axiom Situation : World → Prop
