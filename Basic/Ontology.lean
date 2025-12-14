@@ -1,11 +1,31 @@
-universe u
+universe u v
 
 /-
-  Primitive ontology
+  ontology
+
+  primitive entities of the framework.
+  all structure is imposed axiomatically.
 -/
 
-/-- Worlds / situations are primitive entities -/
+/--
+  worlds or situations
+-/
 axiom World : Type u
 
-/-- Situations (a distinguished class of worlds) -/
+/--
+  properties as higher-order entities
+
+  declared as a Sort rather than a Type to allow
+  unrestricted quantification in propositions.
+-/
+axiom Property : Sort v
+
+/--
+  encoding relation
+-/
+axiom Enc : World → Property → Prop
+
+/--
+  situationhood predicate
+-/
 axiom Situation : World → Prop

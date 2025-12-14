@@ -1,13 +1,24 @@
-import Basic.Ontology
-
-universe u
-
 /-
-  Propositions
+  PROPOSITIONS
+
+  Propositions are treated as primitive intensional entities,
+  not as syntactic formulas or truth values.
+
+  This aligns with possible-worlds semantics where propositions
+  are evaluated relative to situations.
 -/
 
 /--
-  Propositions are predicates on worlds.
-  This is a higher-order semantics.
+  The type of propositions.
 -/
-abbrev PropW := World → Prop
+axiom Propn : Type
+
+/--
+  Negation on propositions.
+
+  This is propositional negation at the intensional level,
+  not Boolean negation in the metalanguage.
+-/
+axiom neg : Propn → Propn
+
+notation "¬ₚ" p => neg p
