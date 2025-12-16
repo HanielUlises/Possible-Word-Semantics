@@ -1,14 +1,12 @@
-import Basic.Truth
 import Basic.Ontology
+import Situation.Derived
 
 /--
-Theorem 1 / 2:
-Situations are extensionally identical if they make
-the same propositions true.
+  Extensionality of situations.
+
+  This principle is postulated rather than derived.
+  It reflects the constitutive assumption that situations
+  are fully determined by their propositional content.
 -/
-axiom Situation_extensionality :
-  ∀ s s' : World,
-    Situation s →
-    Situation s' →
-    (∀ p : Propn, s ⊨ p ↔ s' ⊨ p) →
-    s = s'
+axiom situation_extensionality :
+  ∀ s s' : World, ExtEq s s' → s = s'
