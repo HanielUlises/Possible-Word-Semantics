@@ -1,31 +1,65 @@
-universe u v
+universe u
 
 /-
-  ontology
+  ontological primitives.
 
-  primitive entities of the framework.
-  all structure is imposed axiomatically.
+  this file introduces the basic entities of the theory.
+  all notions are taken as primitive and governed by axioms,
+  in the spirit of higher-order modal and situation semantics.
 -/
 
 /--
-  worlds or situations
+  the domain of objects.
+
+  worlds and situations are not distinguished at the type level.
 -/
 axiom World : Type u
 
 /--
-  properties as higher-order entities
+  the domain of properties.
 
-  declared as a Sort rather than a Type to allow
-  unrestricted quantification in propositions.
+  properties are intensional entities which may be encoded.
 -/
-axiom Property : Sort v
+axiom Property : Type u
 
 /--
-  encoding relation
+  the domain of propositions.
+
+  propositions are intensional and evaluated relative to situations.
+-/
+axiom Propn : Type u
+
+/--
+  objecthood predicate.
+
+  this allows us to state axioms that apply only to objects.
+-/
+axiom Object : World → Prop
+
+/--
+  situationhood predicate.
+
+  situations are partial objects.
+-/
+axiom Situation : World → Prop
+
+/--
+  encoding relation between objects and properties.
+
+  `Enc x F` means that x encodes property F.
 -/
 axiom Enc : World → Property → Prop
 
 /--
-  situationhood predicate
+  encoding relation between objects and propositions.
+
+  this is treated as primitive to match the prover9 theory.
 -/
-axiom Situation : World → Prop
+axiom Encp : World → Propn → Prop
+
+/--
+  vacuous abstraction operator.
+
+  maps propositions to corresponding properties.
+-/
+axiom VAC : Propn → Property

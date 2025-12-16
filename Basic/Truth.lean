@@ -1,37 +1,40 @@
 import Basic.Ontology
 import Basic.Propositions
 
-universe u
-universe v
-
 /-
-  TRUTH IN SITUATIONS
+  truth in situations.
 
-  Truth is relativized to situations.
-  Truth-in is taken as primitive.
+  truth is reduced to propositional encoding,
+  following the prover9 axiomatization.
 -/
 
 /--
-  Truth of a proposition in a world or situation.
+  truth of a proposition in an object.
 -/
-axiom TrueIn : World → Propn → Prop
+axiom TrueIn : Propn → World → Prop
 
-notation:50 s " ⊨ " p => TrueIn s p
+notation:50 p " ⊨ " x => TrueIn p x
 
 /-
-  PART–WHOLE RELATION
-
-  x is part of y iff every property encoded by x
-  is also encoded by y.
+  axioms connecting truth, propositions, and encoding.
 -/
 
 /--
-  Parthood relation on worlds/situations.
+  propositional encoding via properties.
 
-  Formally:
-    x ⊴ y  ≝  ∀F (x encodes F → y encodes F)
+  corresponds to:
+  Encp(x,p) <-> ∃F(Property(F) & F = VAC(p) & Enc(x,F))
 -/
-def PartOf (x y : World) : Prop :=
-  ∀ (F : Property.{v}), Enc x F → Enc y F
+axiom Encp_def :
+  ∀ x : World, ∀ p : Propn,
+    Object x →
+      (Encp x p ↔
+        ∃ F : Property, F = VAC p ∧ Enc x F)
 
-notation:50 x " ⊴ " y => PartOf x y
+/--
+  truth reduces to propositional encoding.
+-/
+axiom TrueIn_def :
+  ∀ x : World, ∀ p : Propn,
+    Object x →
+      (p ⊨ x ↔ Encp x p)
