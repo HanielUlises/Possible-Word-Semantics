@@ -1,52 +1,39 @@
-import Basic.Truth
+import Basic.Ontology
 
 /-
-  MODAL OPERATORS
+  KRIPKEAN MODALITY
 
-  Modal notions are introduced axiomatically.
-  We do not assume a Kripke frame or accessibility relation.
+  Modality is interpreted using standard Kripke semantics.
+  Worlds (including situations) are related by an accessibility
+  relation representing modal possibility.
+
+  No structural properties of accessibility (e.g. reflexivity,
+  transitivity, symmetry) are assumed at this stage.
 -/
 
 /--
-  Modal possibility operator.
--/
-axiom Possibly : Prop → Prop
+  Accessibility relation between worlds.
 
-notation "◊" p => Possibly p
-
-/-
-  DERIVED MODAL CONCEPTS
+  `Accessible w₁ w₂` means that world `w₂` is modally accessible
+  from world `w₁`.
 -/
+axiom Accessible : World → World → Prop
 
 /--
-  Persistence of a proposition.
+  Possibility operator.
 
-  A proposition is persistent iff whenever it is true
-  in a situation, it remains true in all larger situations.
+  `◊ φ` holds iff there exists an accessible world in which φ holds.
 -/
-def Persistent (p : Propn) : Prop :=
-  ∀ s s' : World, s ⊨ p → s ⊴ s' → s' ⊨ p
+def Diamond (φ : World → Prop) (w : World) : Prop :=
+  ∃ w' : World, Accessible w w' ∧ φ w'
 
 /--
-  Actuality of a situation.
+  Necessity operator.
 
-  A situation is actual iff every proposition true in it
-  is true simpliciter.
+  `□ φ` holds iff φ holds in all accessible worlds.
 -/
+def Box (φ : World → Prop) (w : World) : Prop :=
+  ∀ w' : World, Accessible w w' → φ w'
 
-def Actual (s : World) : Prop :=
-  ∀ p : Propn, s ⊨ p → True p
-
-/--
-  Possibility of a situation.
--/
-def Possible (s : World) : Prop :=
-  ◊ Actual s
-
-/--
-  Consistency of a situation.
-
-  No proposition and its negation are both true in it.
--/
-def Consistent (s : World) : Prop :=
-  ¬ ∃ p : Propn, s ⊨ p ∧ s ⊨ ¬ₚ p
+notation "◊" => Diamond
+notation "□" => Box
