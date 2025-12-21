@@ -1,23 +1,7 @@
-/-
-  PROPOSITIONS
-
-  Propositions are treated as primitive intensional entities,
-  not as syntactic formulas or truth values.
-
-  This aligns with possible-worlds semantics where propositions
-  are evaluated relative to situations.
--/
+import Basic.Ontology
 
 /--
-  The type of propositions.
--/
-axiom Propn : Type
-
-/--
-  Negation on propositions.
-
-  This is propositional negation at the intensional level,
-  not Boolean negation in the metalanguage.
+  Intensional negation on propositions.
 -/
 axiom neg : Propn → Propn
 

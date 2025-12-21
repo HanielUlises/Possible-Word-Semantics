@@ -1,39 +1,79 @@
 import Basic.Ontology
 
 /-
-  KRIPKEAN MODALITY
+  Modal operator and axioms (S5)
 
-  Modality is interpreted using standard Kripke semantics.
-  Worlds (including situations) are related by an accessibility
-  relation representing modal possibility.
+  This development introduces a minimal modal vocabulary
+  together with axioms characterizing S5 modal logic.
 
-  No structural properties of accessibility (e.g. reflexivity,
-  transitivity, symmetry) are assumed at this stage.
+  No semantic reduction (e.g. to Kripke frames) is imposed here.
+  Instead, modal strength is fixed axiomatically, allowing the
+  surrounding theory of situations to remain neutral.
+
+  Modal operators are therefore treated as primitive but governed
+  by explicit principles.
 -/
-
-/--
-  Accessibility relation between worlds.
-
-  `Accessible w₁ w₂` means that world `w₂` is modally accessible
-  from world `w₁`.
--/
-axiom Accessible : World → World → Prop
-
-/--
-  Possibility operator.
-
-  `◊ φ` holds iff there exists an accessible world in which φ holds.
--/
-def Diamond (φ : World → Prop) (w : World) : Prop :=
-  ∃ w' : World, Accessible w w' ∧ φ w'
 
 /--
   Necessity operator.
 
-  `□ φ` holds iff φ holds in all accessible worlds.
+  □ p is read as: p holds at all admissible worlds.
 -/
-def Box (φ : World → Prop) (w : World) : Prop :=
-  ∀ w' : World, Accessible w w' → φ w'
+constant Box : (World → Prop) → World → Prop
 
-notation "◊" => Diamond
+/--
+  Possibility operator.
+
+  ◊ p is defined as the dual of necessity.
+-/
+def Diamond (p : World → Prop) : World → Prop :=
+  fun w => ¬ Box (fun v => ¬ p v) w
+
 notation "□" => Box
+notation "◊" => Diamond
+
+/-
+  S5 axioms
+
+  These axioms characterize the modal logic S5:
+  necessity is reflexive, transitive, symmetric,
+  and insensitive to world identity.
+-/
+
+/--
+  Axiom K (distribution).
+
+  Necessity distributes over implication.
+-/
+axiom K :
+  ∀ (p q : World → Prop) (w : World),
+    □ (fun v => p v → q v) w →
+    □ p w →
+    □ q w
+
+/--
+  Axiom T (reflexivity).
+
+  What is necessary is the case.
+-/
+axiom T :
+  ∀ (p : World → Prop) (w : World),
+    □ p w → p w
+
+/--
+  Axiom 4 (positive introspection).
+
+  What is necessary is necessarily necessary.
+-/
+axiom Four :
+  ∀ (p : World → Prop) (w : World),
+    □ p w → □ (□ p) w
+
+/--
+  Axiom 5 (negative introspection).
+
+  What is possible is necessarily possible.
+-/
+axiom Five :
+  ∀ (p : World → Prop) (w : World),
+    ◊ p w → □ (◊ p) w
