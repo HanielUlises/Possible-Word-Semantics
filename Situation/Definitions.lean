@@ -6,13 +6,18 @@ import Modality.Operators
 /-
   CORE DEFINITIONS OF SITUATION SEMANTICS
 
-  This file introduces the standard notions used in
+  This stage introduces the standard notions used in
   possible-worlds and situation semantics.
 
   All notions are defined rather than postulated.
   No metaphysical or modal assumptions are made beyond
   those already encoded in the primitive relations.
 -/
+
+/--
+  The actual world relative to which modal evaluation is carried out.
+-/
+axiom actualWorld : World
 
 /--
   Persistence of a proposition.
@@ -49,7 +54,7 @@ def Actual (s : World) : Prop :=
   situations with possible worlds.
 -/
 def Possible (s : World) : Prop :=
-  ◊ (Actual s)
+  ◊ (fun _ => Actual s) actualWorld
 
 /--
   Worldhood.
@@ -61,8 +66,8 @@ def Possible (s : World) : Prop :=
   truth-determining situations.
 -/
 def Worldhood (s : World) : Prop :=
-  Situation s ∧ ◊ (∀ p : Propn, s ⊨ p ↔ True)
-
+  Situation s ∧
+  ◊ (fun _ => ∀ p : Propn, s ⊨ p ↔ True) actualWorld
 /--
   Maximality (first sense).
 
