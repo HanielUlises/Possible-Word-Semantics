@@ -19,7 +19,7 @@ import Basic.Ontology
 
   □ p is read as: p holds at all admissible worlds.
 -/
-constant Box : (World → Prop) → World → Prop
+axiom Box : (World → Prop) → World → Prop
 
 /--
   Possibility operator.

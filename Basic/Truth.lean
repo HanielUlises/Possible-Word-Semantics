@@ -37,4 +37,4 @@ axiom Encp_def :
 axiom TrueIn_def :
   ∀ x : World, ∀ p : Propn,
     Object x →
-      (p ⊨ x ↔ Encp x p)
+      ((p ⊨ x) ↔ Encp x p)
