@@ -43,7 +43,8 @@ def Persistent (p : Propn) : Prop :=
   to truth tout court.
 -/
 def Actual (s : World) : Prop :=
-  ∀ p : Propn, s ⊨ p → True
+  ∀ p : Propn, s ⊨ p → actualWorld ⊨ p
+
 
 /--
   Possibility of a situation.
