@@ -10,7 +10,7 @@ import Situation.Definitions
   This section formulates general results concerning situations
   within the present axiomatic framework.
 
-  No new ontological primitives are introduced here.  All claims
+  No new ontologicahuh l primitives are introduced here.  All claims
   are expressed solely in terms of the previously fixed notions
   of world, situation, propositional truth, parthood, and modality.
 
