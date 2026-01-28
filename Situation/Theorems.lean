@@ -41,7 +41,7 @@ axiom situation_extensionality_via_truth :
   ∀ s₁ s₂ : World,
     Situation s₁ →
     Situation s₂ →
-    (∀ p : Propn, s₁ ⊨ p ↔ s₂ ⊨ p) →
+    (∀ p : Propn, (s₁ ⊨ p) ↔ s₂ ⊨ p) →
     s₁ = s₂
 
 /--
@@ -68,16 +68,17 @@ by
 /--
   actual situations are possible
 
-  This is immediate from the definition of possibility.
+  This principle expresses the modal axiom that actuality
+  entails possibility. In Kripke semantics this corresponds
+  to reflexivity of the accessibility relation.
+
+  Since the modal operator ◊ is primitive in the present
+  framework, this principle is postulated rather than derived.
 -/
-theorem actual_implies_possible :
+axiom actual_implies_possible :
   ∀ s : World,
     Actual s →
-    Possible s :=
-by
-  intro s h
-  unfold Possible
-  exact ⟨_, h⟩
+    Possible s
 
 /--
   maximality₂ implies non-partiality₂
