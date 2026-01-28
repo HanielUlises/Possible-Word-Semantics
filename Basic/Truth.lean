@@ -22,7 +22,7 @@ import Basic.Propositions
 -/
 axiom TrueIn : World → Propn → Prop
 
-notation:50 s " ⊨ " p => TrueIn s p
+notation:30 x " ⊨ " p => TrueIn x p
 
 /-
   AXIOMS CONNECTING TRUTH, PROPOSITIONS, AND ENCODING
@@ -59,4 +59,4 @@ axiom Encp_def :
 axiom TrueIn_def :
   ∀ x : World, ∀ p : Propn,
     Object x →
-      (x ⊨ p ↔ Encp x p)
+      ((x ⊨ p) ↔ Encp x p)
