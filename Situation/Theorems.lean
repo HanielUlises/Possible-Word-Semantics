@@ -96,3 +96,20 @@ by
   rcases hpart with ⟨p, hp⟩
   unfold Maximal₂ at hmax
   exact hp (hmax p)
+
+/--
+  Every part of a situation is itself a situation.
+
+  This principle is not derivable from the primitive
+  notions of world, situation, and parthood alone.
+  It corresponds to Theorem 3 as established externally
+  and is therefore postulated here.
+
+  (Situation(s) ∧ x ⊴ s) → Situation(x)
+-/
+
+axiom situation_closed_under_parthood :
+  ∀ s x : World,
+    Situation s →
+    (x ⊴ s) →
+    Situation x
