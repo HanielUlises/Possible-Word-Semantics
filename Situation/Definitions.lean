@@ -30,7 +30,10 @@ axiom actualWorld : World
   situation cannot be lost when the situation is enlarged.
 -/
 def Persistent (p : Propn) : Prop :=
-  ∀ s s' : World, s ⊨ p → s ⊴ s' → s' ⊨ p
+  ∀ s : World, ∀ s' : World,
+    (s ⊨ p) →
+    (s ⊴ s') →
+    (s' ⊨ p)
 
 /--
   Actuality of a situation.
@@ -43,7 +46,7 @@ def Persistent (p : Propn) : Prop :=
   to truth tout court.
 -/
 def Actual (s : World) : Prop :=
-  ∀ p : Propn, s ⊨ p → actualWorld ⊨ p
+  ∀ p : Propn, (s ⊨ p) → (actualWorld ⊨ p)
 
 
 /--
@@ -68,7 +71,8 @@ def Possible (s : World) : Prop :=
 -/
 def Worldhood (s : World) : Prop :=
   Situation s ∧
-  ◊ (fun _ => ∀ p : Propn, s ⊨ p ↔ True) actualWorld
+  ◊ (fun _ => ∀ p : Propn, (s ⊨ p) ↔ True) actualWorld
+
 /--
   Maximality (first sense).
 
@@ -79,7 +83,7 @@ def Worldhood (s : World) : Prop :=
   respect to propositional content.
 -/
 def Maximal₁ (s : World) : Prop :=
-  ∀ p : Propn, s ⊨ p ∨ s ⊨ ¬ₚ p
+  ∀ p : Propn, (s ⊨ p) ∨ (s ⊨ ¬ₚ p)
 
 /--
   Partiality (first sense).
@@ -122,4 +126,4 @@ def Partial₂ (s : World) : Prop :=
   imposed on situational truth.
 -/
 def Consistent (s : World) : Prop :=
-  ¬ ∃ p : Propn, s ⊨ p ∧ s ⊨ ¬ₚ p
+  ¬ ∃ p : Propn, (s ⊨ p) ∧ (s ⊨ ¬ₚ p)
