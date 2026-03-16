@@ -29,6 +29,5 @@ theorem partOf_trans :
 theorem partOf_antisymm :
     ∀ x y : World,
       x ⊴ y → y ⊴ x →
-      (∀ F : Property, Enc x F ↔ Enc y F) :=
-  fun _ _ hxy hyx F =>
-    ⟨fun h => hxy F h, fun h => hyx F h⟩
+      ∀ F : Property, Enc x F ↔ Enc y F :=
+  fun _ _ hxy hyx F => ⟨fun h => hxy F h, fun h => hyx F h⟩
