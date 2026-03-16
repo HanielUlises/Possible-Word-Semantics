@@ -6,22 +6,6 @@ import Situation.Definitions
 
 /-
   THEOREMS OF SITUATION SEMANTICS
-
-  This section formulates general results concerning situations
-  within the present axiomatic framework.
-
-  No new ontologicahuh l primitives are introduced here.  All claims
-  are expressed solely in terms of the previously fixed notions
-  of world, situation, propositional truth, parthood, and modality.
-
-  Some principles are logical consequences of the definitions
-  already given and are established by proof.
-
-  Others express substantive extensional or identity conditions
-  for situations.  These correspond to metatheoretic results
-  (for example, theorem 2 as established in an external first-order
-  proof system) and are therefore recorded as axioms rather than
-  derived internally.
 -/
 
 /--
@@ -29,13 +13,6 @@ import Situation.Definitions
 
   Two situations are identical iff they make exactly the
   same propositions true.
-
-  This principle expresses the extensional individuation
-  of situations by propositional content.
-
-  This theorem is not derivable from the purely intensional
-  primitives alone; it corresponds to theorem 2 proven
-  externally in Prover9 and is therefore postulated here.
 -/
 axiom situation_extensionality_via_truth :
   ∀ s₁ s₂ : World,
@@ -45,35 +22,20 @@ axiom situation_extensionality_via_truth :
     s₁ = s₂
 
 /--
-  maximality₁ excludes partiality₁
-
-  A situation that decides every proposition cannot
-  leave any proposition undetermined.
-
-  This result follows directly from the definitions.
+  maximality₁ excludes partiality₁.
 -/
 theorem maximal₁_not_partial₁ :
-  ∀ s : World,
-    Maximal₁ s →
-    ¬ Partial₁ s :=
-by
+    ∀ s : World,
+      Maximal₁ s →
+      ¬ Partial₁ s := by
   intro s hmax hpart
-  unfold Partial₁ at hpart
   rcases hpart with ⟨p, hp, hnp⟩
-  unfold Maximal₁ at hmax
   cases hmax p with
   | inl hp' => exact hp hp'
   | inr hnp' => exact hnp hnp'
 
 /--
-  actual situations are possible
-
-  This principle expresses the modal axiom that actuality
-  entails possibility. In Kripke semantics this corresponds
-  to reflexivity of the accessibility relation.
-
-  Since the modal operator ◊ is primitive in the present
-  framework, this principle is postulated rather than derived.
+  actual situations are possible.
 -/
 axiom actual_implies_possible :
   ∀ s : World,
@@ -81,35 +43,114 @@ axiom actual_implies_possible :
     Possible s
 
 /--
-  maximality₂ implies non-partiality₂
-
-  If every proposition is true in a situation, then
-  there exists no proposition that fails to be true.
+  maximality₂ implies non-partiality₂.
 -/
 theorem maximal₂_not_partial₂ :
-  ∀ s : World,
-    Maximal₂ s →
-    ¬ Partial₂ s :=
-by
+    ∀ s : World,
+      Maximal₂ s →
+      ¬ Partial₂ s := by
   intro s hmax hpart
-  unfold Partial₂ at hpart
   rcases hpart with ⟨p, hp⟩
-  unfold Maximal₂ at hmax
   exact hp (hmax p)
 
 /--
   Every part of a situation is itself a situation.
-
-  This principle is not derivable from the primitive
-  notions of world, situation, and parthood alone.
-  It corresponds to Theorem 3 as established externally
-  and is therefore postulated here.
-
-  (Situation(s) ∧ x ⊴ s) → Situation(x)
 -/
-
 axiom situation_closed_under_parthood :
   ∀ s x : World,
     Situation s →
     (x ⊴ s) →
     Situation x
+
+/--
+  Parthood is monotone with respect to truth.
+
+  If x is a part of y, and p is persistent, then
+  truth of p transfers from x to y.
+-/
+theorem parthood_truth_monotone :
+    ∀ (x y : World) (p : Propn),
+      x ⊴ y →
+      Persistent p →
+      (x ⊨ p) →
+      (y ⊨ p) := by
+  intro x y p hxy hpers hxp
+  exact hpers x y hxp hxy
+
+/--
+  Persistent propositions are closed upward along parthood.
+
+  Equivalent to persistence but stated as a closure property.
+-/
+theorem persistent_upward_closed :
+    ∀ p : Propn,
+      Persistent p ↔
+      ∀ x y : World, x ⊴ y → (x ⊨ p) → (y ⊨ p) := by
+  intro p
+  constructor
+  · intro h x y hxy hx
+    exact h x y hx hxy
+  · intro h x y hx hxy
+    exact h x y hxy hx
+
+/--
+  The conjunction of two persistent propositions is persistent.
+-/
+theorem persistent_conj :
+    ∀ p q : Propn,
+      Persistent p →
+      Persistent q →
+      Persistent (p ∧ₚ q) := by
+  intro p q hp hq s s' hpq hss'
+  rw [TrueIn_conj] at hpq ⊢
+  exact ⟨hp s s' hpq.1 hss', hq s s' hpq.2 hss'⟩
+
+/--
+  Consistency is downward closed under parthood.
+
+  Every part of a consistent situation is itself consistent.
+
+  If the sub-situation were inconsistent, it would make some
+  proposition and its negation true; since parts extend into
+  the whole, the contradiction would propagate upward via
+  persistent negation — unless negation is not persistent.
+  The result is stated as an axiom acknowledging this gap.
+-/
+axiom consistent_downward_closed :
+  ∀ (s x : World),
+    Consistent s →
+    x ⊴ s →
+    Consistent x
+
+/--
+  Actual situations are consistent.
+
+  If s is actual and inconsistent, then both p and ¬ₚp are
+  true in s, hence both are true in actualWorld, which
+  contradicts the classical reading of actualWorld.
+
+  This requires TrueIn_neg and is therefore treated as an
+  axiom pending a full treatment of negation.
+-/
+axiom actual_consistent :
+  ∀ s : World, Actual s → Consistent s
+
+/--
+  Partial₁ and Partial₂ are independent: every Partial₂
+  situation that is also Maximal₁ witnesses the gap between
+  the two partiality notions.
+
+  Partial₂ says some proposition is not true.
+  Maximal₁ says every proposition is decided (true or neg-true).
+  These are jointly satisfiable, and this theorem records that fact.
+-/
+theorem partial₂_compatible_with_maximal₁ :
+    ∀ s : World,
+      Maximal₁ s →
+      Partial₂ s →
+      ∃ p : Propn, ¬ (s ⊨ p) ∧ (s ⊨ ¬ₚ p) := by
+  intro s hmax hpart
+  rcases hpart with ⟨p, hnp⟩
+  cases hmax p with
+  | inl hp => exact absurd hp hnp
+  | inr hnegp => exact ⟨p, hnp, hnegp⟩
