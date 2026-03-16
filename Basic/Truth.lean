@@ -4,17 +4,9 @@ import Basic.Propositions
 /-
   TRUTH IN SITUATIONS
 
-  This theory introduces truth-in as a primitive relation
-  between situations (or worlds) and propositions.
-
-  Truth is not taken as fundamental in isolation, but is
-  constrained by axioms connecting it to propositional
-  encoding via properties, following the Prover9
-  axiomatization used in the metatheoretic proofs.
-
-  The orientation of truth is world-first:
-    s ⊨ p
-  in accordance with standard situation and Kripke semantics.
+  Truth-in is constrained by axioms connecting it to
+  propositional encoding via properties, following the
+  Prover9 axiomatization used in the metatheoretic proofs.
 -/
 
 /--
@@ -24,21 +16,11 @@ axiom TrueIn : World → Propn → Prop
 
 notation:30 x " ⊨ " p => TrueIn x p
 
-/-
-  AXIOMS CONNECTING TRUTH, PROPOSITIONS, AND ENCODING
--/
-
 /--
   Propositional encoding via properties.
 
   A proposition p is encoded in an object x iff there exists
-  a property F such that:
-    • F is the vacuous abstraction of p, and
-    • x encodes F.
-
-  Corresponds exactly to the Prover9 axiom:
-
-    Encp(x,p) ↔ ∃F (Property(F) ∧ F = VAC(p) ∧ Enc(x,F))
+  a property F such that F = VAC p and x encodes F.
 -/
 axiom Encp_def :
   ∀ x : World, ∀ p : Propn,
@@ -48,15 +30,39 @@ axiom Encp_def :
 
 /--
   Truth reduces to propositional encoding.
-
-  A proposition is true in a situation iff that situation
-  propositionally encodes it.
-
-  Corresponds exactly to the Prover9 axiom:
-
-    TrueIn(p,x) ↔ Encp(x,p)
 -/
 axiom TrueIn_def :
   ∀ x : World, ∀ p : Propn,
     Object x →
       ((x ⊨ p) ↔ Encp x p)
+
+/--
+  Truth of a conjunction: s ⊨ p ∧ₚ q ↔ s ⊨ p ∧ s ⊨ q.
+-/
+axiom TrueIn_conj :
+  ∀ (s : World) (p q : Propn),
+    (s ⊨ p ∧ₚ q) ↔ (s ⊨ p) ∧ (s ⊨ q)
+
+/--
+  Truth of a disjunction: s ⊨ p ∨ₚ q ↔ s ⊨ p ∨ s ⊨ q.
+-/
+axiom TrueIn_disj :
+  ∀ (s : World) (p q : Propn),
+    (s ⊨ p ∨ₚ q) ↔ (s ⊨ p) ∨ (s ⊨ q)
+
+/--
+  Truth of implication: s ⊨ p →ₚ q ↔ (s ⊨ p → s ⊨ q).
+
+  NB: this makes material implication match situational
+  implication, which is a deliberate strong choice.
+-/
+axiom TrueIn_impl :
+  ∀ (s : World) (p q : Propn),
+    (s ⊨ p →ₚ q) ↔ ((s ⊨ p) → (s ⊨ q))
+
+/--
+  Truth of negation: s ⊨ ¬ₚp ↔ ¬(s ⊨ p).
+-/
+axiom TrueIn_neg :
+  ∀ (s : World) (p : Propn),
+    (s ⊨ ¬ₚ p) ↔ ¬(s ⊨ p)
