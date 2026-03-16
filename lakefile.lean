@@ -7,3 +7,4 @@ package possibleWorldsSemantics
 lean_lib Basic
 lean_lib Modality
 lean_lib Situation
+lean_lib Test
