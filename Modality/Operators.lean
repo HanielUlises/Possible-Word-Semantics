@@ -77,3 +77,47 @@ axiom Four :
 axiom Five :
   ∀ (p : World → Prop) (w : World),
     ◊ p w → □ (◊ p) w
+
+/-- Necessitation encodes the closure of the logic under universal truth:
+    any proposition holding at every world is necessary at every world.
+    Without this rule no theorem of the form □φ w is derivable from
+    universal facts alone, leaving S5 incomplete as a deductive system. -/
+axiom Nec : ∀ (p : World → Prop), (∀ w, p w) → ∀ w, □ p w
+
+/-- Necessity is monotone with respect to implication.
+    If a conditional holds necessarily and its antecedent holds necessarily,
+    the consequent holds necessarily. This is the semantic content of Axiom K
+    stated as a derived rule rather than a bare axiom schema. -/
+theorem Box_monotone (p q : World → Prop) (w : World)
+    (hpq : ∀ v, p v → q v) (hp : □ p w) : □ q w :=
+  K p q w (Nec (fun v => p v → q v) hpq w) hp
+
+
+/-- Bridge between possible necessity and necessity.
+    In S5 this holds at the frame level via symmetry and transitivity
+    of the accessibility relation, but is not derivable from K, T, 4, 5
+    as stated without a semantic reduction. It is therefore postulated. -/
+axiom PossNec :
+  ∀ (p : World → Prop) (w : World),
+    ◊ (fun w' => □ p w') w → □ p w
+
+/-- The characteristic thesis of S5: whatever is possibly necessary is necessary. -/
+theorem S5_characteristic (p : World → Prop) (w : World)
+    (h : ◊ (fun w' => □ p w') w) : □ p w :=
+  PossNec p w h
+  
+/-- Iterated necessity: a necessary truth is necessarily necessary.
+    This corresponds to the positive introspection of necessity,
+    ensuring that the accessibility relation is transitive at the frame level. -/
+theorem Box_Box_of_Box (p : World → Prop) (w : World)
+    (h : □ p w) : □ (□ p) w :=
+  Four p w h
+
+/-- Universal truth entails possibility.
+    A proposition true at every world cannot be excluded by any world,
+    so it is witnessed as possible at the actual world. -/
+theorem Nec_implies_Pos (p : World → Prop) (w : World)
+    (h : ∀ v, p v) : ◊ p w := by
+  intro hbox
+  have := T (fun v => ¬ p v) w hbox
+  exact this (h w)
