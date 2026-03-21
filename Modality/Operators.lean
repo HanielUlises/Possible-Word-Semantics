@@ -78,20 +78,34 @@ axiom Five :
   ∀ (p : World → Prop) (w : World),
     ◊ p w → □ (◊ p) w
 
+/-
+  Open proof obligation OP-1: Necessitation.
+
+  The necessitation rule is not derivable from K, T, 4, 5 alone.
+  Without it no theorem of the form □φ w is provable from universal
+  facts, leaving S5_characteristic and the maximality of actualWorld
+  unreachable.
+
+  See README.md § Open Proof Obligations, OP-1.
+-/
+
 /-- Necessitation encodes the closure of the logic under universal truth:
     any proposition holding at every world is necessary at every world.
     Without this rule no theorem of the form □φ w is derivable from
-    universal facts alone, leaving S5 incomplete as a deductive system. -/
+    universal facts alone, leaving S5 incomplete as a deductive system.
+
+    Resolves OP-1. -/
 axiom Nec : ∀ (p : World → Prop), (∀ w, p w) → ∀ w, □ p w
 
-/-- Necessity is monotone with respect to implication.
-    If a conditional holds necessarily and its antecedent holds necessarily,
-    the consequent holds necessarily. This is the semantic content of Axiom K
-    stated as a derived rule rather than a bare axiom schema. -/
-theorem Box_monotone (p q : World → Prop) (w : World)
-    (hpq : ∀ v, p v → q v) (hp : □ p w) : □ q w :=
-  K p q w (Nec (fun v => p v → q v) hpq w) hp
+/-
+  Open proof obligation OP-1b: Possible necessity collapses to necessity.
 
+  The characteristic thesis ◊□p → □p is not derivable from K, T, 4, 5,
+  and Nec alone without a semantic reduction to frames. It is postulated
+  directly as a constitutive principle of S5.
+
+  See README.md § Open Proof Obligations, OP-1.
+-/
 
 /-- Bridge between possible necessity and necessity.
     In S5 this holds at the frame level via symmetry and transitivity
@@ -101,11 +115,22 @@ axiom PossNec :
   ∀ (p : World → Prop) (w : World),
     ◊ (fun w' => □ p w') w → □ p w
 
-/-- The characteristic thesis of S5: whatever is possibly necessary is necessary. -/
+/-- Necessity is monotone with respect to implication.
+    If a conditional holds necessarily and its antecedent holds necessarily,
+    the consequent holds necessarily. This is the semantic content of Axiom K
+    stated as a derived rule rather than a bare axiom schema. -/
+theorem Box_monotone (p q : World → Prop) (w : World)
+    (hpq : ∀ v, p v → q v) (hp : □ p w) : □ q w :=
+  K p q w (Nec (fun v => p v → q v) hpq w) hp
+
+/-- The characteristic thesis of S5: whatever is possibly necessary is necessary.
+    This collapses the distinction between the necessity of a proposition and
+    the necessity of its possibility, giving the modal logic its strongest
+    classical form. -/
 theorem S5_characteristic (p : World → Prop) (w : World)
     (h : ◊ (fun w' => □ p w') w) : □ p w :=
   PossNec p w h
-  
+
 /-- Iterated necessity: a necessary truth is necessarily necessary.
     This corresponds to the positive introspection of necessity,
     ensuring that the accessibility relation is transitive at the frame level. -/
@@ -119,5 +144,4 @@ theorem Box_Box_of_Box (p : World → Prop) (w : World)
 theorem Nec_implies_Pos (p : World → Prop) (w : World)
     (h : ∀ v, p v) : ◊ p w := by
   intro hbox
-  have := T (fun v => ¬ p v) w hbox
-  exact this (h w)
+  exact T (fun v => ¬ p v) w hbox (h w)
