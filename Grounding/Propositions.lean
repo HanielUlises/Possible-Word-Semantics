@@ -33,15 +33,19 @@ infixr:60 " →ₚ " => impl
 
   Defined as mutual implication at the propositional level.
   This is not definitional equality but intensional equivalence:
-  p ⟺ₚ q holds as a proposition in its own right.
+  p iffₚ q holds as a proposition in its own right.
 -/
 noncomputable def iff_p (p q : Propn) : Propn :=
   conj (impl p q) (impl q p)
 
-infixl:55 " ⟺ₚ " => iff_p
+infixl:55 " iffₚ " => iff_p
 
 /--
   Double negation: ¬ₚ¬ₚp is intensionally identical to p.
+
+  This corresponds to the Boolean principle that two negations
+  cancel at the level of propositional identity, reflecting
+  the classical character of the propositional base.
 -/
 axiom neg_neg :
   ∀ p : Propn, neg (neg p) = p
@@ -92,9 +96,9 @@ axiom disj_assoc :
   ∀ p q r : Propn, disj (disj p q) r = disj p (disj q r)
 
 /--
-  Biconditional is symmetric: if p ⟺ₚ q then q ⟺ₚ p.
+  Biconditional is symmetric: if p iffₚ q then q iffₚ p.
 -/
-theorem iff_p_symm (p q : Propn) (h : p ⟺ₚ q) : q ⟺ₚ p := by
+theorem iff_p_symm (p q : Propn) (h : p iffₚ q) : q iffₚ p := by
   unfold iff_p at *
   rw [conj_comm]
   rw [conj_comm] at h
