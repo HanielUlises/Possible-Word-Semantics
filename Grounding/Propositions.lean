@@ -33,15 +33,16 @@ infixr:60 " →ₚ " => impl
 
   Defined as mutual implication at the propositional level.
   This is not definitional equality but intensional equivalence:
-  p ↔ₚ q holds as a proposition in its own right.
+  p ⟺ₚ q holds as a proposition in its own right.
 -/
-def iff_p (p q : Propn) : Propn :=
+noncomputable def iff_p (p q : Propn) : Propn :=
   conj (impl p q) (impl q p)
 
-infixl:55 " ↔ₚ " => iff_p
+notation:55 p " ⟺ₚ " q => iff_p p q
 
 /--
   Double negation: ¬ₚ¬ₚp is intensionally identical to p.
+
 -/
 axiom neg_neg :
   ∀ p : Propn, neg (neg p) = p
@@ -92,20 +93,16 @@ axiom disj_assoc :
   ∀ p q r : Propn, disj (disj p q) r = disj p (disj q r)
 
 /--
-  Biconditional is symmetric: if p ↔ₚ q then q ↔ₚ p.
-
-  Follows from the definition of ↔ₚ and commutativity of ∧ₚ.
+  Biconditional is symmetric: if p ⟺ₚ q then q ⟺ₚ p.
 -/
-theorem iff_p_symm (p q : Propn) (h : p ↔ₚ q) : q ↔ₚ p := by
+theorem iff_p_symm (p q : Propn) (h : p ⟺ₚ q) : q ⟺ₚ p := by
   unfold iff_p at *
   rw [conj_comm]
   rw [conj_comm] at h
   exact h
 
 /--
-  Double negation elimination and introduction are inverses.
-
-  Applying neg_neg twice returns to the original proposition.
+  Double negation is involutive.
 -/
 theorem neg_neg_involutive (p : Propn) : neg (neg (neg (neg p))) = p := by
   rw [neg_neg, neg_neg]
