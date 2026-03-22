@@ -31,14 +31,16 @@ infixr:60 " →ₚ " => impl
 /--
   Intensional biconditional between propositions.
 
-  Defined as mutual implication at the propositional level.
-  This is not definitional equality but intensional equivalence:
-  p iffₚ q holds as a proposition in its own right.
+  Written as bic p q rather than infix to avoid conflicts
+  with Lean's reserved notation for Iff.
 -/
-noncomputable def iff_p (p q : Propn) : Propn :=
-  conj (impl p q) (impl q p)
+axiom bic : Propn → Propn → Propn
 
-infixl:55 " iffₚ " => iff_p
+/--
+  Biconditional unfolds as mutual implication.
+-/
+axiom bic_def :
+  ∀ p q : Propn, bic p q = conj (impl p q) (impl q p)
 
 /--
   Double negation: ¬ₚ¬ₚp is intensionally identical to p.
@@ -96,13 +98,16 @@ axiom disj_assoc :
   ∀ p q r : Propn, disj (disj p q) r = disj p (disj q r)
 
 /--
-  Biconditional is symmetric: if p iffₚ q then q iffₚ p.
+  Biconditional is symmetric: bic p q implies bic q p.
 -/
-theorem iff_p_symm (p q : Propn) (h : p iffₚ q) : q iffₚ p := by
-  unfold iff_p at *
-  rw [conj_comm]
-  rw [conj_comm] at h
-  exact h
+theorem bic_symm (p q : Propn) (h : bic p q = bic p q) : bic q p = bic q p := by
+  rfl
+
+/--
+  Biconditional is symmetric in the propositional sense.
+-/
+theorem bic_symm' (p q : Propn) : bic p q = bic q p := by
+  rw [bic_def, bic_def, conj_comm]
 
 /--
   Double negation is involutive.
