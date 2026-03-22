@@ -38,11 +38,10 @@ infixr:60 " →ₚ " => impl
 noncomputable def iff_p (p q : Propn) : Propn :=
   conj (impl p q) (impl q p)
 
-notation:55 p " ⟺ₚ " q => iff_p p q
+infixl:55 " ⟺ₚ " => iff_p
 
 /--
   Double negation: ¬ₚ¬ₚp is intensionally identical to p.
-
 -/
 axiom neg_neg :
   ∀ p : Propn, neg (neg p) = p
