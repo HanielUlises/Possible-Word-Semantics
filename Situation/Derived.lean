@@ -15,7 +15,7 @@ import Grounding.Truth
   propositions true.
 -/
 def Agree (s s' : World) : Prop :=
-  ∀ p : Propn, s ⊨ p ↔ s' ⊨ p
+  ∀ p : Propn, (s ⊨ p) ↔ (s' ⊨ p)
 
 /--
   Extensional equivalence of situations.
