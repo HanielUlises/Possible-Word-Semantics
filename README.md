@@ -10,7 +10,7 @@ All ontological primitives are taken as axioms. Every defined notion is built fr
 
 The development follows the Zalta–Fine tradition, in which worlds and situations are not distinguished at the type level. `World` is the single domain; `Situation` and `Object` are predicates over it, not separate types.
 
-The central primitive is encoding (`Enc`), not predication. A situation encodes the properties that constitute its informational content. Parthood is defined encoding-first: `s ⊴ s'` holds iff every property encoded by `s` is also encoded by `s'`, which matches the mereology of informational situations in Barwise–Perry and the abstract object theory of Zalta.
+The central primitive is encoding (`Enc`). A situation encodes the properties that constitute its informational content. Parthood is defined encoding-first: `s ⊴ s'` holds iff every property encoded by `s` is also encoded by `s'`, which matches the mereology of informational situations in Barwise–Perry and the abstract object theory of Zalta.
 
 Modal operators are axiomatic rather than reduced to Kripke frames. The S5 schemas are postulated directly:
 
@@ -25,7 +25,7 @@ Modal operators are axiomatic rather than reduced to Kripke frames. The S5 schem
 
 `Modality/Frames.lean` provides the corresponding frame-level conditions — reflexivity, transitivity, and symmetry of the accessibility relation R — as a potential semantic grounding, but these are not wired to `Box` by default. The modal strength of the system is fixed axiomatically, leaving the surrounding theory of situations neutral with respect to frame semantics.
 
-Extensionality is a postulate, not a theorem. Situations are individuated by propositional content according to the principle:
+Extensionality is a postulate (not a theorem). Situations are individuated by propositional content according to the principle:
 
 ```math
 Situation(s) ∧ Situation(s') ∧ (∀p, s ⊨ p ↔ s' ⊨ p) → s = s'
