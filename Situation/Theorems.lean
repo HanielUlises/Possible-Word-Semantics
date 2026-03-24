@@ -154,3 +154,17 @@ theorem partial₂_compatible_with_maximal₁ :
   cases hmax p with
   | inl hp => exact absurd hp hnp
   | inr hnegp => exact ⟨p, hnp, hnegp⟩
+
+/-- Theorem 8 (Zalta 1993): every proposition is persistent.
+    A proposition true in a situation remains true in every
+    situation that extends it. Persistence is not a special
+    property of select propositions but holds universally,
+    reflecting that informational content is monotone under
+    the parthood order.
+
+    Proof is direct from part_truth_mono once OP-2 and OP-3
+    are resolved. Marked sorry until then. Sorry-/
+theorem all_propositions_persistent :
+    ∀ p : Propn, Persistent p := by
+  intro p s s' hsp hss'
+  sorry -- OP-2, OP-3: requires part_truth_mono to be closed
