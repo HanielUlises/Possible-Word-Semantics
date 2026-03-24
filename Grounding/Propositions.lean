@@ -1,4 +1,4 @@
-import Basic.Ontology
+import Grounding.Ontology
 
 /--
   Intensional negation on propositions.

@@ -1,5 +1,5 @@
-import Basic.Ontology
-import Basic.Parthood
+import Grounding.Ontology
+import Grounding.Parthood
 
 /-
   Ontological dependence between situations.

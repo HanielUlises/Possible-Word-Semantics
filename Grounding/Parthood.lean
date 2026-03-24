@@ -1,5 +1,5 @@
-import Basic.Ontology
-import Basic.Truth
+import Grounding.Ontology
+import Grounding.Truth
 import Situation.Derived
 import Situation.Extensionality
 

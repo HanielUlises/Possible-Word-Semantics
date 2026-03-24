@@ -1,7 +1,7 @@
-import Basic.Ontology
-import Basic.Truth
-import Basic.Propositions
-import Basic.Parthood
+import Grounding.Ontology
+import Grounding.Truth
+import Grounding.Propositions
+import Grounding.Parthood
 import Situation.Definitions
 
 /-

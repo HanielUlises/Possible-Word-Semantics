@@ -1,4 +1,4 @@
-import Basic.Ontology
+import Grounding.Ontology
 
 /-
   Modal operator and axioms (S5)

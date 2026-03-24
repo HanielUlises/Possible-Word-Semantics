@@ -1,5 +1,5 @@
-import Basic.Ontology
-import Basic.Propositions
+import Grounding.Ontology
+import Grounding.Propositions
 
 /-
   TRUTH IN SITUATIONS
